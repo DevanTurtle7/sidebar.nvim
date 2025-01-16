@@ -101,69 +101,68 @@ end
 local function build_loclist(group, directory, level)
     local loclist_items = {}
 
-    if directory.children then
-        for _, node in ipairs(directory.children) do
-            if node.type == "file" then
-                local icon = get_fileicon(node.name)
-                local selected = { text = "" }
+    for _, node in ipairs(directory.children) do
+        if node.type == "file" then
+            local icon = get_fileicon(node.name)
+            local selected = { text = "" }
 
-                if yanked_files[node.path] then
-                    selected = { text = " *", hl = "SidebarNvimFilesYanked" }
-                elseif cut_files[node.path] then
-                    selected = { text = " *", hl = "SidebarNvimFilesCut" }
-                end
-
-                loclist_items[#loclist_items + 1] = {
-                    group = group,
-                    left = {
-                        { text = string.rep("  ", level) .. icon.text .. " ", hl = icon.hl },
-                        { text = node.name },
-                        selected,
-                    },
-                    name = node.name,
-                    path = node.path,
-                    type = node.type,
-                    parent = node.parent,
-                    node = node,
-                }
-            elseif node.type == "directory" then
-                local icon
-                if open_directories[node.path] then
-                    icon = icons["directory_open"]
-                else
-                    icon = icons["directory_closed"]
-                end
-
-                local selected = { text = "" }
-
-                if yanked_files[node.path] then
-                    selected = { text = " *", hl = "SidebarNvimFilesYanked" }
-                elseif cut_files[node.path] then
-                    selected = { text = " *", hl = "SidebarNvimFilesCut" }
-                end
-
-                loclist_items[#loclist_items + 1] = {
-                    group = group,
-                    left = {
-                        {
-                            text = string.rep("  ", level) .. icon .. " " .. node.name,
-                            hl = "SidebarNvimFilesDirectory",
-                        },
-                        selected,
-                    },
-                    name = node.name,
-                    path = node.path,
-                    type = node.type,
-                    parent = node.parent,
-                    node = node,
-                }
+            if yanked_files[node.path] then
+                selected = { text = " *", hl = "SidebarNvimFilesYanked" }
+            elseif cut_files[node.path] then
+                selected = { text = " *", hl = "SidebarNvimFilesCut" }
             end
 
-            if node.type == "directory" and open_directories[node.path] then
-                vim.list_extend(loclist_items, build_loclist(group, node, level + 1))
+            loclist_items[#loclist_items + 1] = {
+                group = group,
+                left = {
+                    { text = string.rep("  ", level) .. icon.text .. " ", hl = icon.hl },
+                    { text = node.name },
+                    selected,
+                },
+                name = node.name,
+                path = node.path,
+                type = node.type,
+                parent = node.parent,
+                node = node,
+            }
+        elseif node.type == "directory" then
+            local icon
+            if open_directories[node.path] then
+                icon = icons["directory_open"]
+            else
+                icon = icons["directory_closed"]
             end
+
+            local selected = { text = "" }
+
+            if yanked_files[node.path] then
+                selected = { text = " *", hl = "SidebarNvimFilesYanked" }
+            elseif cut_files[node.path] then
+                selected = { text = " *", hl = "SidebarNvimFilesCut" }
+            end
+
+            loclist_items[#loclist_items + 1] = {
+                group = group,
+                left = {
+                    {
+                        text = string.rep("  ", level) .. icon .. " " .. node.name,
+                        hl = "SidebarNvimFilesDirectory",
+                    },
+                    selected,
+                },
+                name = node.name,
+                path = node.path,
+                type = node.type,
+                parent = node.parent,
+                node = node,
+            }
+        end
+
+        if node.type == "directory" and open_directories[node.path] then
+            vim.list_extend(loclist_items, build_loclist(group, node, level + 1))
         end
     end
+
     return loclist_items
 end
 
