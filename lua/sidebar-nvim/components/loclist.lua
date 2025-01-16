@@ -135,6 +135,7 @@ function Loclist:draw_group(ctx, group_name, with_label, section_lines, section_
         print(group_name .. "Empty. returning")
         return
     end
+
     print(group_name .. "Not empty. continuing")
 
     if with_label then
