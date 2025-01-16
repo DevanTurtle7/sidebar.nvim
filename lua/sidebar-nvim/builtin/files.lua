@@ -276,7 +276,7 @@ local function delete_file(src, trash, confirm_deletion)
         end
     end
 
-    os.execute(string.format("mv %s %s", src, trash))
+    os.execute(string.format("mv \"%s\" \"%s\"", src, trash))
 end
 
 local function create_directory(dest)
