@@ -132,8 +132,10 @@ function Loclist:draw_group(ctx, group_name, with_label, section_lines, section_
     local group = self.groups[group_name]
 
     if #group == 0 and not self.show_empty_groups then
+        print(group_name .. "Empty. returning")
         return
     end
+    print(group_name .. "Not empty. continuing")
 
     if with_label then
         local icon = self.group_icon.opened
