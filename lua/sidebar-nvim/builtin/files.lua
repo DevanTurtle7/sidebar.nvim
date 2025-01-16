@@ -5,7 +5,11 @@ local config = require("sidebar-nvim.config")
 local has_devicons, devicons = pcall(require, "nvim-web-devicons")
 local luv = vim.loop
 
-local loclist = Loclist:new({ omit_single_group = false, show_group_count = false })
+local loclist = Loclist:new({
+    omit_single_group = false,
+    show_group_count = false,
+    show_empty_groups = true
+})
 
 local icons = {
     directory_closed = "",
