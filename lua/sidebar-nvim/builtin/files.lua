@@ -173,7 +173,6 @@ end
 local function update(group, directory)
     local node = { path = directory, children = scan_dir(directory) }
 
-    print("Setting items")
     loclist:set_items(build_loclist(group, node, 0), { remove_groups = false })
 end
 
@@ -504,6 +503,8 @@ return {
         -- create folder
         ["f"] = function(line)
             local location = loclist:get_location_at(line)
+            print(location .. " is location")
+
             if location == nil then
                 return
             end
