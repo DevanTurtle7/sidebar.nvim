@@ -264,6 +264,7 @@ end
 -- if there is no group at `line`, then do nothing
 -- @param (number) line
 function Loclist:toggle_group_at(line)
+    print("Toggling at line "..line)
     local group = self._group_indexes[line]
     if not group then
         return
