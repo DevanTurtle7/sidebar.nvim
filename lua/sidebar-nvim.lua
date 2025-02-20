@@ -94,6 +94,7 @@ end
 
 -- Force immediate update
 function M.update()
+    print("Updating")
     lib.update()
 end
 
