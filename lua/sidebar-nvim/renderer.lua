@@ -145,8 +145,11 @@ local function get_lines_and_hl(sections_data)
     return lines, hl, section_line_indexes
 end
 
+local i = 0
+
 function M.draw(sections_data)
-    print("drawing")
+    print("drawing" .. i)
+    i = i + 1
     return profile.run("view.render", function()
         if not api.nvim_buf_is_loaded(view.View.bufnr) then
             return
