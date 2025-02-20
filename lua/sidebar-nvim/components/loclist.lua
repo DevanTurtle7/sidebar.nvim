@@ -270,7 +270,12 @@ function Loclist:toggle_group_at(line)
     end
 
     group.is_closed = not group.is_closed
-    print("is_closed: "..group.is_closed)
+
+    if group.is_closed then
+        print("Group is closed")
+    else
+        print("Group is not closed")
+    end
 end
 
 -- Toggle group with name `group_name`
