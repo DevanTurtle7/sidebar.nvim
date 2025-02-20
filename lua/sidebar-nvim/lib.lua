@@ -37,7 +37,7 @@ end
 local function _start_timer(should_delay)
     M.timer = luv.new_timer()
 
-    local delay = 100
+    local delay = 1000
     if should_delay then
         delay = config.update_interval
     end
