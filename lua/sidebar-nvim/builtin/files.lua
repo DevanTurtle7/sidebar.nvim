@@ -3,6 +3,7 @@ local Loclist = require("sidebar-nvim.components.loclist")
 local config = require("sidebar-nvim.config")
 local has_devicons, devicons = pcall(require, "nvim-web-devicons")
 local luv = vim.loop
+local uv = vim.uv
 
 local loclist = Loclist:new({ omit_single_group = false, show_group_count = false })
 
@@ -19,7 +20,6 @@ local cut_files = {}
 local open_directories = {}
 
 local history = { position = 0, groups = {} }
-local trash_dir = luv.os_homedir() .. "/.local/share/Trash/files/"
 
 local function get_fileicon(filename)
     if has_devicons and devicons.has_loaded() then
@@ -245,7 +245,7 @@ local function delete_file(src, trash, confirm_deletion)
         end
     end
 
-    luv.fs_rename(src, trash, function(err, _)
+    uv.fs_rename(src, trash, function(err, _)
         if err ~= nil then
             vim.schedule(function()
                 utils.echo_warning(err)
@@ -330,7 +330,7 @@ return {
                     move_file(operation.dest, operation.src, true)
                 end,
                 src = location.node.path,
-                dest = trash_dir .. location.node.name,
+                dest = config.trash_dir .. location.node.name,
             }
             local group = { executed = false, operations = { operation } }
 
@@ -386,7 +386,7 @@ return {
                         copy_file(operation.src, operation.dest, true)
                     end,
                     undo = function()
-                        delete_file(operation.dest, trash_dir .. utils.filename(operation.src), true)
+                        delete_file(operation.dest, config.trash_dir .. utils.filename(operation.src), true)
                     end,
                     src = path,
                     dest = dest_dir .. "/" .. utils.filename(path),
@@ -448,7 +448,7 @@ return {
                     create_file(operation.dest)
                 end,
                 undo = function()
-                    delete_file(operation.dest, trash_dir .. name, true)
+                    delete_file(operation.dest, config.trash_dir .. name, true)
                 end,
                 src = nil,
                 dest = parent .. "/" .. name,
